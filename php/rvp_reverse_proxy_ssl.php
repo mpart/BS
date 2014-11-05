@@ -96,7 +96,7 @@
 		$hostname = "www.worldcat.org"; 				// Hostname to attach to HTTP GET/POST requests 
 		//$hostport = getservbyname('https', 'tcp');			// Port to establish the connection to
 		$urlpath = "/webservices/catalog/search/worldcat/sru";
-		//$urlextra = "wskey=xvIBPSpBwemdHlGsOmjR15cFx7hQ01hyMJ9lXGOfnOE8UFOKnqHwVwF6MQHlwzn3nLrp4iuL6rIomj1s&";	// Extra GET variables.
+		//$urlextra = "";	// Extra GET variables.
 		$hostport = getservbyname('http', 'tcp');			// Port to establish the connection to
 		// XML, chunks may garble UTF, any full one byte only charset to request
 		$httpextra = "Content-Type: text/xml; charset=iso-8859-1\r\n";			// Extra HTTP headers.
