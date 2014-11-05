@@ -1,0 +1,155 @@
+<!DOCTYPE html> 
+
+<HTML>
+	<!-- html 5 -->
+
+	<HEAD>
+		
+		<TITLE>Library search</TITLE>
+
+		<META name="viewport" content="width=device-width; initial-scale=1.0" />
+		<META http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+		<BASE href="http://users.metropolia.fi/~jounilaa/prj/" >
+		<!-- <BASE href="http://127.0.0.1/" > -->
+		
+		<LINK id="wc_css" rel="stylesheet" href="bs.css" type="text/css" />
+		<!-- <LINK rel="shortcut icon" href="favicon.ico" /> -->
+		
+		<!-- Haettu 3.11.2014 http://www.worldcatmobile.org/js/jquery.js -->
+		<SCRIPT type="text/JavaScript" src="jquery.js"></SCRIPT>
+		<SCRIPT type="text/JavaScript" src="wc_data.js"></SCRIPT>
+		<SCRIPT type="text/JavaScript" src="wc_choices.js"></SCRIPT>
+		<SCRIPT type="text/JavaScript" src="wc_representation.js"></SCRIPT>
+		<!-- 3.11.2014 -->
+		<SCRIPT type="text/JavaScript" src="phonegap.js"></SCRIPT>
+
+	</HEAD>
+	
+	<BODY>
+
+		<TABLE id="typeset_table" >
+		  <TR>
+		   <TD>
+			<!-- Logos to top-left corner -->
+			<DIV class="logo" id="logo"><H1 class="logo">Library<!--<SUP><SMALL>&copy;</SMALL></SUP>--><SMALL>search</SMALL></H1></DIV>
+
+			
+			<TABLE id="search_table" class="search_table">
+				<TR><TD>
+
+			<!-- Text fields and choices to search -->
+			<FORM id="searchform" name="searchform" method="GET" action="http://www.worldcat.org/webservices/catalog/search/worldcat/sru?">
+				<INPUT type="hidden" name="operation" value="searchRetrieve" />
+				<INPUT type="hidden" name="version" value="1.2" />
+				<INPUT type="hidden" name="sortKeys" value="relevance" id="isort" /> <!-- Author Title relevance -->
+				<INPUT type="hidden" name="recordPacking" value="xml" />
+				<INPUT type="hidden" name="startRecord" value="1" />
+				<INPUT type="hidden" name="maximumRecords" value="5" />
+				<INPUT type="hidden" name="recordSchema" value="dc" />
+ 				<INPUT type="hidden" name="wskey" value="xvIBPSpBwemdHlGsOmjR15cFx7hQ01hyMJ9lXGOfnOE8UFOKnqHwVwF6MQHlwzn3nLrp4iuL6rIomj1s" />
+
+			<!-- SRU explain:
+				http://www.worldcat.org/webservices/catalog/search/sru?wskey=xvIBPSpBwemdHlGsOmjR15cFx7hQ01hyMJ9lXGOfnOE8UFOKnqHwVwF6MQHlwzn3nLrp4iuL6rIomj1s
+			  -->
+
+				<TABLE id="form_table" >
+				 <TR class="basic_query" >	
+				  <TD class="basic_query" >
+
+					<!-- srw.ti all &quot;Mobile Software&quot; AND srw.au=&quot;Manuel&quot; AND srw.bn=9781615206568 -->
+
+					<INPUT id="q" type="text" name="query" value="" size="50" class="textfields" autofocus />
+						<SPAN id="sq" class="textline">Keyword search</SPAN>
+					<INPUT id="title" type="text" name="Title" value="" size="50" class="textfields" />
+						<SPAN id="stitle" class="textline">Title</SPAN>
+					<INPUT id="authorname" type="text" name="Author" value="" size="50" class="textfields" />
+						<SPAN id="sauthorname" class="textline">Author</SPAN>
+					<INPUT id="subject" type="text" name="Subject" value="" size="50" class="textfields" />
+						<SPAN id="ssubject" class="textline">Subject</SPAN>
+					<INPUT id="isbn" type="text" name="ISBN" value="" size="50" class="textfields" />
+						<SPAN id="sisbn" class="textline">ISBN</SPAN>
+					<INPUT id="location" type="text" name="Location" value="" size="50" class="textfields" />
+						<SPAN id="slocation" class="textline">Location</SPAN>
+
+					<!-- button down or right -->
+					<DIV class="controls" > <BUTTON id="querybutton" type="submit" >Query</BUTTON> </DIV>
+
+			      	  </TD>
+				 </TR>
+
+			  </TABLE>
+ 			</FORM>
+				 </TD></TR>
+				 <TR><TD>
+
+			       <SPAN> Add search term: <SPAN id="titlechoice" class="choicetext"> Title </SPAN> | <SPAN id="authorchoice" class="choicetext"> Author </SPAN> | <SPAN id="subjectchoice" class="choicetext"> Subject </SPAN> | <SPAN id="isbnchoice" class="choicetext"> ISBN </SPAN> | <SPAN id="keywordchoice" class="choicetext"> Keyword </SPAN> | <SPAN id="locationchoice" class="choicetext"> Location </SPAN></SPAN> 
+			       <BR><SPAN id="removechoice" class="choicetext"> Clear search terms. </SPAN>
+				  </TD>
+				  </TR>
+				  <TR>
+				   <TD>
+			       <!-- Links to search next or return the previous list -->
+		 	       <SPAN id="linknext" class="choicetext" > Next results </SPAN> | <SPAN id="linkprevious" class="choicetext"> Previous results </SPAN> | Total <SPAN id="searchresultstext"> - . </SPAN>
+
+			       <!-- debug table -->
+
+		</TD></TR><TR><TD>
+		<TABLE id="debug_table">
+		 <TR><TD id="debug" > Debug text. </TD></TR>
+		</TABLE>
+
+				 	</TD>
+				</TR>
+
+   		  </TABLE>
+		  </TD></TR> 
+		  <TR><TD>
+		<TABLE id="result_table">
+		  <TR>
+		   <TD>
+			<!-- List area to list the results (and expand them if needed) -->
+			<P id="test">List area to list the results and expand.</P>
+		   </TD>
+	       <TD>
+			<SPAN class="lineselectortext"> location </SPAN><DIV class="lineselectorsymbol">&#x21BB;</DIV> 
+
+
+		   </TD>
+		  </TR>
+		</TABLE>
+
+		  </TD></TR>
+		  <TR>
+		   <TD>
+			<!-- List of other databases to try the ISBN-search -->
+			    <DIV class="isbnrefdatabases" id="isbnrefdatabases">
+				<A href="http://m.melinda.kansalliskirjasto.fi/F/?func=find-a&request=9789520107819&" class="isbnrefdatabases" >
+<!-- 
+href="http://m.melinda.kansalliskirjasto.fi/F/?func=find-a-0&con_lng=fin&P_CON_LNG=MOB&local_base=fin01_opac&find_code=WRD&clear_level=2&request=TESTI&" 
+-->
+					Melinda
+				</A> | 
+				<A href="https://metcat.amkit.fi/vwebv/searchBasic?" class="isbnrefdatabases" >
+					Metcat
+				</A> |
+			    </DIV>
+			<DIV class="databases" id="databases">
+				<A href="http://www.nelliportaali.fi" class="databases" >
+				<!-- Nelliportaali (lista tietokannoista) http://www.nelliportaali.fi -->
+					Nelli
+				</A>
+			</DIV>
+		   </TD>
+		  </TR>
+		 <TR><TD>
+		<TABLE id="advertisement_table">
+		 <TR><TD id="Banner" > <P> Advertisement space. </P> </TD></TR>
+		</TABLE>
+		</TD></TR>		  
+
+		</TABLE>
+
+	</BODY>	
+</HTML>
+

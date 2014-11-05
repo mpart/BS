@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<widget xmlns = "http://www.w3.org/ns/widgets"
+		xmlns:gap = "http://phonegap.com/ns/1.0"
+		id = ”fi.metropolia.bs"
+		versionCode=”1"
+		version = ”0.0.1">
+
+		<name>BS</name>
+		
+	<description>First deployment.</description>
+
+	<author href="http://users.metropolia.fi/~jounilaa/prj" email=”jouni.laakso2@metropolia.fi">
+		Laboratory project.
+	</author>
+
+	<!-- <icon src="icon.png" /> -->
+
+	<!-- <gap:platform name="ios" /> -->
+	<!-- <gap:platform name="android" /> -->
+	
+	<!-- <preference name="orientation" value="landscape" /> -->
+	<!-- <gap:splash src="splash.png" /> -->
+
+	<!-- Ohjeita: -->
+	<!-- https://build.phonegap.com/people/sign_in -->
+	<!-- http://docs.build.phonegap.com/en_US/introduction_getting_started.md.html -->
+	
+	<!-- Project repository -->
+	<!-- https://github.com/mpart/BS/tree/master/prj -->
+	
+	<!--  App ID: 1164074 Version n_a PhoneGap 3.3.0 -->
+	
+	<!-- https://build.phonegap.com/apps/1164074/install -->
+	
+</widget>

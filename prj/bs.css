@@ -1,0 +1,179 @@
+
+@media screen and (min-width: 800px) {
+
+	.logo{
+		font-size: 130%;
+		float: none;
+	}
+	table#typeset_table{
+		font-size: 90%; 
+		width:	70%;
+		margin-left: auto;
+		margin-right: auto;
+		text-align: center; 
+		border: 1px solid black;
+	}
+	table#search_table{
+		font-size: 80%; 
+	}
+	img#phoneimage{
+		width: auto;
+	}
+
+}
+@media screen and (max-width: 800px) {
+
+	.logo{
+		font-size: 120%;
+		float: left;
+	}
+	table#typeset_table{
+		width:	100%;
+		font-size: 80%; 
+		text-align: center; 
+		border: 1px solid black;
+	}
+	table#search_table{
+		font-size: 75%; 
+	}
+	img#phoneimage{
+		width: auto;
+		max-width: 150px;
+		width: 20%;
+	}
+	
+}
+@media screen and (min-width: 1200px) {
+
+	.logo{
+		font-size: 140%;
+		float: none;
+	}
+	.textline{
+		width: 100px;
+	}
+	table#typeset_table{
+		width:	60%;
+		font-size: 100%; 
+		text-align: center; 
+		border: 1px solid black;
+	}
+	table#search_table{
+		font-size: 90%; 
+	}
+
+}
+
+.controls{
+	text-align: center; 
+}
+
+.choicetext{
+	white-space: pre;
+	color: green;
+	font-size: 105%;
+	cursor: pointer;
+}
+.textline{
+	white-space: pre;
+	vertical-align: top;
+	display: none;
+	width: 70px;
+	text-align: left;
+	padding-bottom: 4px;
+}
+.textfields{
+	display: none;
+}
+.lineselectorsymbol{
+	font-style: normal;
+	font-size: x-large;
+	color: green;
+	white-space: pre;
+	float: right;
+	vertical-align: middle;
+	cursor: pointer;
+}
+.lineselectortext{
+	font-style: normal;
+	font-size: medium;
+	color: green;
+	white-space: pre;
+	float: right;
+	cursor: pointer;
+}
+
+table#search_table{
+	text-align: center; 
+	border: 1px solid black;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 10px;
+	width: 100%;
+}
+table#form_table{
+	border: none;
+	text-align: left; 
+}
+
+table#result_table{
+	width: 100%;
+	border: 1px solid green;
+	visibility: visible;
+	text-align: center; 
+}
+
+table#debug_table{
+	width: 100%;
+	border: 1px solid red;
+	visibility: collapse;
+	text-align: center; 
+}
+
+table#advertisement_table{
+	width: 100%;
+	border: none;
+	visibility: visible;
+	text-align: center; 
+}
+
+a.databases:link {
+	color: black;
+}
+a.isbnrefdatabases:link {
+	color: green;
+}
+a.databases:visited {
+	color: black;
+}
+div.databases {
+	display: inline;
+	color: black;
+}
+div.isbnrefdatabases {
+	display: inline;
+	color: black;
+}
+
+body { 
+	font-family: 'Arial Unicode MS', Arial, Verdana, sans-serif; 
+	padding-top: .25em; padding-left: .25em; padding-right: .25em; padding-bottom: .25em; 
+}
+
+hr {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	margin-left: auto;
+	margin-right: auto;
+	border-style: inset;
+	border-width: 1px;
+} 
+
+hr.resulthr {
+	color: green;
+	width: 20%;
+	margin-top: 1em;
+	margin-bottom: 1em;
+	border-style: inset;
+	border-width: 1px;
+}
