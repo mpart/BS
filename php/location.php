@@ -67,7 +67,7 @@
 	//$hostport = getservbyname('https', 'tcp');			// Port to establish the connection to
 	$urlpath = "/webservices/catalog/content/libraries";
 	//$urlextra = "";	// Extra GET variables.
-	$urlextra = "wskey=xvIBPSpBwemdHlGsOmjR15cFx7hQ01hyMJ9lXGOfnOE8UFOKnqHwVwF6MQHlwzn3nLrp4iuL6rIomj1s&";
+	$urlextra = "";
 	$hostport = getservbyname('http', 'tcp');			// Port to establish the connection to
 	//$httpextra = "Accept: text/xml; text/html\r\n";		// Extra HTTP headers.
 	/*
@@ -128,7 +128,7 @@
 	 */		
 	$rvpproxy->close_socket();
 
-	//echo "<DOCTYPE html>";
+	//echo "<!DOCTYPE html>";
 
 	unset($rvpproxy);	// Unnecessary before exit.
 	

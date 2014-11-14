@@ -1,5 +1,5 @@
-var idquerybaseurl = "http://127.0.0.1/cgi/location.php?";
-//var idquerybaseurl = "http://users.metropolia.fi/php/books.php?";
+//var idquerybaseurl = "http://127.0.0.1/cgi/location.php?";
+var idquerybaseurl = "http://users.metropolia.fi/php/location.php?";
 var idquerypath = "";
 
 // xISBN haku: http://xisbn.worldcat.org/xisbnadmin/doc/api.htm ei löydy

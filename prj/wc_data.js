@@ -2,8 +2,8 @@
 
 var sortorder 	 = "atstart";
 var querystr  	 = "";
-var querybaseurl = "http://127.0.0.1/cgi/books.php?";
-//var querybaseurl = "http://users.metropolia.fi/~jounilaa/php/books.php?";
+//var querybaseurl = "http://127.0.0.1/cgi/books.php?";
+var querybaseurl = "http://users.metropolia.fi/~jounilaa/php/books.php?";
 var originalbaseurl = "http://www.worldcat.org/webservices/catalog/search/worldcat/sru?";
 var xhttp;
 var showdebug = false;
@@ -12,8 +12,8 @@ var baseref = document.getElementsByTagName("BASE")[0];
 if( ! baseref ){
 	baseref = document.createElement("BASE"); 
 }
-//baseref.setAttribute( "href", "http://users.metropolia.fi/~jounilaa/prj/" ); 
-baseref.setAttribute( "href", "http://127.0.0.1/prj/" ); // viimeinen '/' oltava
+baseref.setAttribute( "href", "http://users.metropolia.fi/~jounilaa/prj/" ); 
+//baseref.setAttribute( "href", "http://127.0.0.1/prj/" ); // viimeinen '/' oltava
 
 function tag_wc_debug_switch( ){
 }
