@@ -24,7 +24,7 @@ function show_text_field( textfieldId, headerId ) {
 
 function hide_advanced_text_fields(){
 	document.getElementById("q").style.display="none";
-	// document.getElementById("q").value="";
+	document.getElementById("q").value="";
 	document.getElementById("sq").style.display="none";
 	document.getElementById("title").style.display="none";
 	document.getElementById("title").value="";
@@ -34,13 +34,10 @@ function hide_advanced_text_fields(){
 	document.getElementById("authorname").value="";
 	document.getElementById("isbn").style.display="none";
 	document.getElementById("isbn").value="";
-	document.getElementById("location").style.display="none";
-	document.getElementById("location").value="";
 	document.getElementById("stitle").style.display="none";
 	document.getElementById("ssubject").style.display="none";
 	document.getElementById("sauthorname").style.display="none";
 	document.getElementById("sisbn").style.display="none";
-	document.getElementById("slocation").style.display="none";
 }
 function bind_textfield_additions(){
 	$('#authorchoice').bind("click", function() {
@@ -58,12 +55,48 @@ function bind_textfield_additions(){
 	$('#keywordchoice').bind("click", function() {
 		show_text_field( "keyword", "skeyword" );
 	});
-	$('#locationchoice').bind("click", function() {
-		show_text_field( "location", "slocation" );
-	});
 	$('#removechoice').bind("click", function() {
 		hide_advanced_text_fields();
-		show_text_field("q","sq"); // basic query
+		//show_text_field("q","sq"); // basic query
+		show_text_field("subject","ssubject"); // default query (recommended)
 		wc_init(); // clear sortorder
+		document.getElementsByName( "startRecord" )[0].value = 0; // clear position
 	});
+	if( $('#debugchoice') )
+		$('#debugchoice').bind("click", function() {
+			wc_debug_switch();
+		});
+}
+
+function wc_show_progress( persent ){
+	var prg = document.getElementById("prg"); 
+	if( ! prg ){
+ 		wc_add_result_location_row( "<CENTER>Progress: <PROGRESS id=\"prg\" value=\""+persent+"\" max=\"100\"></PROGRESS></CENTER>");
+	}
+	prg = document.getElementById("prg");
+	if( prg ){
+		prg.value = persent;
+		prg.style.visibility="visible"; // collapse
+	}
+}
+function wc_remove_progress( ){
+
+	prg = document.getElementById("prg");
+	if( prg!=null ){
+		prg.style.visibility="collapse";
+		wc_delete_last_result_row( );
+	}
+}
+function wc_delete_last_result_row( ){
+        var rtable = document.getElementById("result_table");
+        var rowcount = document.getElementById("result_table").rows.length;
+        if( rtable ){
+                if( rowcount > 0 )
+                        rtable.deleteRow( (rowcount-1) );
+		return document.getElementById("result_table").rows.length;
+	}
+	return -1;
+}
+function wc_clear_result_table(){
+	while( wc_delete_last_result_row() > 0 ){ ; }
 }

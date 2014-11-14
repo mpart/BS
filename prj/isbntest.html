@@ -1,0 +1,46 @@
+<DOCTYPE html>
+<HTML>
+<HEAD>
+	<TITLE> ISBN TEST </TITLE>
+	<META http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<SCRIPT type="text/JavaScript" src="jquery.js"></SCRIPT>
+	<SCRIPT type="text/JavaScript">
+
+	$(document).ready( function() {
+
+	$("button").click( function(){
+
+		//var text = "ISBN: 978 364-2308673 (electronic bk.) 3642308678 (electronic bk.) http://dx.doi.org/10.1007/978-3-642-30867-3";
+		var text = "ISSN: 8364-230X (electronic bk.) 3642308678 (electronic bk.) http://dx.doi.org/10.1007/978-3-642-30867-3";
+		var reg = new RegExp( "[0-9]{4}[ -]?[0-9|X]{4}" ); // ISSN
+		//var reg = new RegExp( "[0-9]{1,3}[ -]?[0-9]{1,5}[ -]?[0-9]{1,7}[ -]?[0-9]{1,6}[ -]?[0-9]{1}?" ); // ISBN
+		//var reg = new RegExp( "((97[8|9]\{1\})?[ -]?\d\{1,5\}[ -]?\d\{1,7\}[ -]?\d\{1,6\}[ -]?\d\{1\}?)" );
+		// 0 tai 1 97[8|9], joskus jatetaan pois?, ainakin WC jattaa pois elektronisisstajulkaisuista
+		// vali tai viiva tai ei mitaan
+		// numerot ryhmittain
+		// tarkistussumma voi ehka olla vaihtoehtoinen
+		var result = reg.exec( text );
+	
+		document.getElementById("result").innerHTML = "<PRE> Result: [" + result + "] </PRE>";
+
+		if(result!=null)
+			document.getElementById("result2").innerHTML = "<PRE> array length: " + result.length + "</PRE>";
+
+
+		result = reg.exec( text );
+	
+		document.getElementById("result3").innerHTML = "<PRE> Result: [" + result + "] </PRE>";
+
+	});
+
+	});
+
+	</SCRIPT>
+</HEAD>
+<BODY>
+	<P id="result">Text.</P>
+	<P id="result2">Text.</P>
+	<P id="result3">Text.</P>
+	<BUTTON type="button">Test</BUTTON>
+</BODY>
+</HTML>

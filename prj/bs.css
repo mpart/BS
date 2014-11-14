@@ -64,6 +64,40 @@
 
 }
 
+h1{
+	text-shadow: 1px 1px #A1A1A1;
+}
+h3{
+	margin-top: .6em;
+	margin-bottom: .5em;
+}
+h4{
+	margin-top: .7em;
+	margin-bottom: .5em;
+}
+h5{
+	margin-top: .5em;
+	margin-bottom: .5em;
+}
+body{
+	background-image: url("hyllyja_pysty.jpg");
+	background-color: #ffffff;
+	background-size: 100%;
+	background-repeat: repeat;
+	background-attachment: fixed;
+}
+
+table#typeset_table{
+	background: white;
+	opacity: 0.85;
+	filter: alpha(opacity=85); 
+}
+table{
+	background: white;
+	opacity: 1;
+	filter: alpha(opacity=100);
+}
+
 .controls{
 	text-align: center; 
 }
@@ -116,11 +150,29 @@ table#form_table{
 	text-align: left; 
 }
 
+tr.result_table:nth-child(even){
+	background: #E0F2F7;
+}
+tr.result_table:nth-child(odd){
+	background: #F7F8E0;
+}
+
 table#result_table{
 	width: 100%;
 	border: 1px solid green;
 	visibility: visible;
 	text-align: center; 
+	border-bottom: 1px solid green;
+	font-weight: 500;
+	font-size: 108%;
+}
+
+tr.result_table{
+	width: 100%;
+	border-bottom: 1px solid green;
+	text-align: left;
+	visibility: visible;
+	border-collapse: collapse;
 }
 
 table#debug_table{
@@ -176,4 +228,9 @@ hr.resulthr {
 	margin-bottom: 1em;
 	border-style: inset;
 	border-width: 1px;
+}
+
+#prg{
+	width: 50%;
+	visibility: collapse;
 }
