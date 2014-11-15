@@ -22,7 +22,7 @@
 	 * If defined, HttpRvp removes chunks and returns only one responce instead."); 
 	 */
 	/* Clearly faster without this setting: */
-	define("REMOVECHUNKS", 1); 
+	//define("REMOVECHUNKS", 1); 
 
 	/*
 	 * If "true", output debug html instead of headers (garbled output).
@@ -99,8 +99,7 @@
 		$hostname = "www.worldcat.org"; 				// Hostname to attach to HTTP GET/POST requests 
 		//$hostport = getservbyname('https', 'tcp');			// Port to establish the connection to
 		$urlpath = "/webservices/catalog/search/worldcat/sru";
-		//$urlextra = "";	// Extra GET variables.
-		$urlextra = "wskey=WSKEY";
+		$urlextra = "";	// Extra GET variables.
 		$hostport = getservbyname('http', 'tcp');			// Port to establish the connection to
 		// XML, chunks may garble UTF, any full one byte only charset to request
 		//$httpextra = "Accept: text/xml; text/html\r\n";		// Extra HTTP headers.
@@ -130,33 +129,6 @@
 		exit();
 	}
 
-
-/*	if($_GET){ 
-		foreach ($_GET as $key => $value) {
-                         echo "Debug get: key=$key value=$value.<BR>";
-		}
-	}else{
-		echo "<H3>No _GET parameters.</H3>";
-	}
-	if($_REQUEST){
-		foreach ($_REQUEST as $key => $value) {
-                         echo "Debug request: key=$key value=$value.<BR>";
-		}
-	}else{
-		echo "<H3>No _REQUEST parameters.</H3>";
-	}
-	if( isset( $_SERVER ) ){
-		$ret = $_SERVER[ 'REQUEST_URI' ];
-		echo "<H3>_SERVER[ 'REQUEST_URI' ]:"; 
-		echo "$ret </H3>";
-		$uriarray = explode( "?", $ret, 2 );
-		if( count( $uriarray ) > 1 ){
-			echo "<BR><BR><H4> $uriarray[1] </H4>";
-			$urlextra = $uriarray[1] . $urlextra;
-		}
-	}
-*/
-
 	/*
 	 * Proxy request to the remote server and output the result to the client.
 	 */
@@ -170,7 +142,7 @@
 	 */		
 	$rvpproxy->close_socket();
 
-	//echo "<!DOCTYPE html>";
+	//echo "<DOCTYPE html>";
 
 	unset($rvpproxy);	// Unnecessary before exit.
 	

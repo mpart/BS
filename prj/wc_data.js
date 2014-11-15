@@ -1,12 +1,12 @@
-
-
-var sortorder 	 = "atstart";
-var querystr  	 = "";
+var sortorder	= "atstart";
+var xhttp;
+var showdebug 	= false;
+var querystr	= "";
+// Books
 //var querybaseurl = "http://127.0.0.1/cgi/books.php?";
 var querybaseurl = "http://users.metropolia.fi/~jounilaa/php/books.php?";
 var originalbaseurl = "http://www.worldcat.org/webservices/catalog/search/worldcat/sru?";
-var xhttp;
-var showdebug = false;
+
 
 var baseref = document.getElementsByTagName("BASE")[0]; 
 if( ! baseref ){
@@ -42,6 +42,7 @@ function wc_data_document_ready(){
 	// Called from wc_representation.js (document ready function)
 
 	wc_init();
+	
 
 	$('#querybutton').bind( "click", function() { // bind < JS 1.7
 		wc_form_query();
@@ -55,6 +56,11 @@ function wc_data_document_ready(){
 	$('#linkresults').bind( "click", function() { // bind < JS 1.7
 		wc_form_query();
 	});
+
+	if( document.getElementsByName("startRecord") && document.getElementsByName("startRecord").length>0 )
+		document.getElementsByName("startRecord")[0].value=1;
+	if( document.getElementsByName("maximumRecords") && document.getElementsByName("maximumRecords").length>0 )
+		document.getElementsByName("maximumRecords")[0].value=5;
 
 }
 
@@ -235,9 +241,13 @@ function wc_parse_responce( ){
 		var recnum2 = 0;
 
 		if( ! records || ! recordstotal || ! recordstotal[0] || records.length==0 ){
+			var descriptiontxt = "<!-- IDENTIFIER --><H5><CENTER> No results. </CENTER></H5>";
 			wc_debug_text("No results (records or recordstotal[0] was null or length was zero).");
-			wc_add_result_row( 0, "<!-- IDENTIFIER --><H5><CENTER> No results. </CENTER></H5>", "", "" );
+			//wc_add_result_row( 0, "<!-- IDENTIFIER --><H5><CENTER> No results. </CENTER></H5>", "", "" );
 			document.getElementById( "searchresultstext" ).innerHTML = "0 .";
+			//wc_add_result_location_row( 1 , "<CENTER><P> Holding were not found. </P></CENTER>", "", "" );
+			//wc_add_result_location_row( "<CENTER><P> No holding were found. </P></CENTER>" );
+			wc_show_error_responce_message( descriptiontxt, xmlresponce );
 			return;
 		}
 
@@ -404,5 +414,51 @@ function wc_get_previous_results_query( ){
 	if( Number( document.getElementsByName( "startRecord" )[0].value ) < 0 )
 		document.getElementsByName( "startRecord" )[0].value = 0;
 	wc_form_query();
+}
+function wc_show_error_responce_message( desctxt, xmlresponce ){
+	// -> <diagnostics> -> <diagnostic> -> 	<message>
+	//					<uri>
+	//					<details>
+	if( xmlresponce == null ){
+		wc_debug_text("wc_show_error_responce_message: xmlresponce was null.");
+		wc_debug_text( desctxt );
+		return;
+	}
+	wc_debug_text("At wc_show_error_responce_message.");
+	var errmessage = xmlresponce.getElementsByTagName( "message" );
+	if(errmessage==null || errmessage.length==0 ){
+		wc_debug_text("wc_show_error_responce_message: errmessage was null.");
+		wc_debug_text( desctxt );
+		return;
+	}
+	var errtxt = errmessage[0].firstChild.nodeValue;
+	var errdetails = xmlresponce.getElementsByTagName( "details" );
+	if( errdetails!=null && errdetails.length>0 ){
+		if( errdetails[0]!=null && errdetails[0].firstChild!=null )
+			errtxt += ": " + errdetails[0].firstChild.nodeValue;
+	}else{
+		wc_debug_text("wc_show_error_responce_message: errdetails==null or errdetails.length<=0 .");
+	}
+	// Esim. Worldcat API: "General System Error: java.lang.NullPointerException"
+	// tai: kirja aei ole listattu, paikkaa ei tunneta tms.
+	wc_add_result_location_row( "<CENTER><H5>"+desctxt+"</H5><H6>Description:</H6><H5>"+errtxt+"</H5></CENTER>" );
+	wc_debug_text( "Description:" + desctxt );
+	wc_debug_text( "Diagnostics message:" + errtxt );
+}
+function wc_add_result_location_row( htmltxt ){
+        var rtable = document.getElementById("result_table");
+	var rowcount = document.getElementById("result_table").rows.length;
+        var rrow = rtable.insertRow(rowcount);
+        if( !rrow ){
+                wc_debug_Text("Could not insert a row.");
+                return;
+        }
+        rrow.setAttribute("class","result_table");
+        $("link#wc_css").attr({href : "bs.css"}); // reload
+        //$("link[#wc_css]").attr({href : "bs.css"}); // reload
+
+        var rcol1 = rrow.insertCell(0);
+	if( htmltxt!="" )
+        	rcol1.innerHTML = htmltxt;
 }
 

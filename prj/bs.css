@@ -79,6 +79,10 @@ h5{
 	margin-top: .5em;
 	margin-bottom: .5em;
 }
+h6{
+	margin-top: .5em;
+	margin-bottom: .3em;
+}
 body{
 	background-image: url("hyllyja_pysty.jpg");
 	background-color: #ffffff;

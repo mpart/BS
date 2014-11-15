@@ -1,5 +1,7 @@
+// Locations
 //var idquerybaseurl = "http://127.0.0.1/cgi/location.php?";
-var idquerybaseurl = "http://users.metropolia.fi/php/location.php?";
+var idquerybaseurl = "http://users.metropolia.fi/~jounilaa/php/location.php?";
+var idoriginalbaseurl = "http://www.worldcat.org/webservices/catalog/content/libraries";
 var idquerypath = "";
 
 // xISBN haku: http://xisbn.worldcat.org/xisbnadmin/doc/api.htm ei löydy
@@ -38,7 +40,7 @@ var idquerypath = "";
 function wc_location_document_ready(){
 	// Called from wc_representation.js (document ready function)
 
-	idquerypath = "&maximiumLibraries=5&frbrGrouping=on&";
+	idquerypath = "maximumLibraries=5&frbrGrouping=on&";
 	//idquerypath = "&maximiumLibraries=5&frbrGrouping=off&";
 	//idquerypath = "ip=" + callers_ip() + "&maximiumLibraries=5&format=xml&frbrGrouping=off&";
 
@@ -88,22 +90,6 @@ function wc_get_location_prompt( text ){
 		txt = "";
         return txt;
 }
-function wc_add_result_location_row( htmltxt ){
-        var rtable = document.getElementById("result_table");
-	var rowcount = document.getElementById("result_table").rows.length;
-        var rrow = rtable.insertRow(rowcount);
-        if( !rrow ){
-                wc_debug_Text("Could not insert a row.");
-                return;
-        }
-        rrow.setAttribute("class","result_table");
-        $("link#wc_css").attr({href : "bs.css"}); // reload
-        //$("link[#wc_css]").attr({href : "bs.css"}); // reload
-
-        var rcol1 = rrow.insertCell(0);
-	if( htmltxt!="" )
-        	rcol1.innerHTML = htmltxt;
-}
 function wc_parse_locations( oclcid, locationtxt ){
 
 	var qstring  = ""+idquerybaseurl;
@@ -136,7 +122,7 @@ function wc_parse_locations( oclcid, locationtxt ){
 
         xhttp.onreadystatechange = wc_parse_location_responce;
 
-        wc_debug_text( "Original URL: [" + originalbaseurl + "/" + oclcid + "" + idquerypath + "]");
+        wc_debug_text( "Original URL: [" + idoriginalbaseurl + "/" + oclcid + "?" + idquerypath + "]");
         wc_debug_text( "URL to open: [" + getidstr + "]");
         
         xhttp.open( "GET", getidstr,  true);
@@ -147,34 +133,7 @@ function wc_parse_locations( oclcid, locationtxt ){
 
 }
 
-function wc_show_error_responce_message( desctxt, xmlresponce ){
-	// -> <diagnostics> -> <diagnostic> -> 	<message>
-	//					<uri>
-	//					<details>
-	if( xmlresponce == null ){
-		wc_debug_text("wc_show_error_responce_message: xmlresponce was null.");
-		wc_debug_text( desctxt );
-		return;
-	}
-	wc_debug_text("At wc_show_error_responce_message.");
-	var errmessage = xmlresponce.getElementsByTagName( "message" );
-	if(errmessage==null){
-		wc_debug_text("wc_show_error_responce_message: errmessage was null.");
-		wc_debug_text( desctxt );
-		return;
-	}
-	var errtxt = errmessage[0].firstChild.nodeValue;
-	var errdetails = xmlresponce.getElementsByTagName( "details" );
-	if( errdetails!=null && errdetails.length>0 ){
-		if( errdetails[0]!=null && errdetails[0].firstChild!=null )
-			errtxt += ": " + errdetails[0].firstChild.nodeValue;
-	}else{
-		wc_debug_text("wc_show_error_responce_message: errdetails==null or errdetails.length<=0 .");
-	}
-	wc_add_result_location_row( "<CENTER><H5> "+desctxt+"</H5><H5>"+errtxt+"</H5></CENTER>" );
-	wc_debug_text( "Description:" + desctxt );
-	wc_debug_text( "Diagnostics message:" + errtxt );
-}
+
 function wc_parse_location_responce(){
 	// holdings -> holding 	-> physicalLocation
 	//			-> physicalAddress -> text
@@ -244,5 +203,8 @@ function wc_parse_location_responce(){
 			//wc_add_result_location_row( "<CENTER><P> No holding were found. </P></CENTER>" );
 			wc_show_error_responce_message( descriptiontxt, xmlresponce );
 		}
+	}else if( xhttp.readyState == 4 && xhttp.status == 404){ // last
+			wc_remove_progress();
+			wc_add_result_location_row( "<CENTER><H5>HTTP 404: File not found.</H5></CENTER>" );			
 	}
 }

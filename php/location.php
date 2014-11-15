@@ -22,7 +22,7 @@
 	 * If defined, HttpRvp removes chunks and returns only one responce instead."); 
 	 */
 	/* Clearly faster without this setting: */
-	define("REMOVECHUNKS", 1); 
+	//define("REMOVECHUNKS", 1); 
 
 	/*
 	 * If "true", output debug html instead of headers (garbled output).
@@ -58,25 +58,17 @@
 	$uriarray = ["",""];
 	$ret = false;
 
-	// to fsockopen: ssl (tls) or none
-
 	// Worldcat
-	//$hoststring = 'ssl://www.worldcat.org'; 			// String to use to open the connection with fsockopen
-	$hoststring = 'www.worldcat.org'; 				// String to use to open the connection with fsockopen
+	$hoststring = 'www.worldcat.org'; 				// String to use to open the connection with fsockopen, 'ssl://www.worldcat.org' , ssl (tls) or none
 	$hostname = "www.worldcat.org"; 				// Hostname to attach to HTTP GET/POST requests 
-	//$hostport = getservbyname('https', 'tcp');			// Port to establish the connection to
 	$urlpath = "/webservices/catalog/content/libraries";
-	//$urlextra = "";	// Extra GET variables.
-	$urlextra = "";
+	$urlextra = "";	// Extra GET variables.
 	$hostport = getservbyname('http', 'tcp');			// Port to establish the connection to
-	//$httpextra = "Accept: text/xml; text/html\r\n";		// Extra HTTP headers.
 	/*
 	 * Include headers in request from client, not here. These are not replaced. */
 	$httpextra .= "Accept-Charset: charset=iso-8859-1\r\n";		// Extra HTTP headers.
 	$httpextra .= "Via: Rvp.php\r\n";
 	$httppostextra = ""; // GET is used not POST, extra POST variables
-	//$httpextra = "Content-Type: text/xml; charset=iso-8859-1\r\n";	// Extra HTTP headers.
-	//$httpextra = "Content-Type: charset=UTF-8\r\n";			// Extra HTTP headers.
 	$appendnametourl = "oclcid"; // GET variable whos value is appended to the URL -part before "?"
 	/*
 	 * Init socket to host.
@@ -87,33 +79,6 @@
 		echo "<!-- Error: new HttpRvp failed. -->";
 		exit();
 	}
-
-
-/*	if($_GET){ 
-		foreach ($_GET as $key => $value) {
-                         echo "Debug get: key=$key value=$value.<BR>";
-		}
-	}else{
-		echo "<H3>No _GET parameters.</H3>";
-	}
-	if($_REQUEST){
-		foreach ($_REQUEST as $key => $value) {
-                         echo "Debug request: key=$key value=$value.<BR>";
-		}
-	}else{
-		echo "<H3>No _REQUEST parameters.</H3>";
-	}
-	if( isset( $_SERVER ) ){
-		$ret = $_SERVER[ 'REQUEST_URI' ];
-		echo "<H3>_SERVER[ 'REQUEST_URI' ]:"; 
-		echo "$ret </H3>";
-		$uriarray = explode( "?", $ret, 2 );
-		if( count( $uriarray ) > 1 ){
-			echo "<BR><BR><H4> $uriarray[1] </H4>";
-			$urlextra = $uriarray[1] . $urlextra;
-		}
-	}
-*/
 
 	/*
 	 * Proxy request to the remote server and output the result to the client.
@@ -128,7 +93,7 @@
 	 */		
 	$rvpproxy->close_socket();
 
-	//echo "<!DOCTYPE html>";
+	//echo "<DOCTYPE html>";
 
 	unset($rvpproxy);	// Unnecessary before exit.
 	
