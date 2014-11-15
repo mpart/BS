@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 	<widget xmlns = "http://www.w3.org/ns/widgets"
 		xmlns:gap = "http://phonegap.com/ns/1.0"
-		id = ”fi.metropolia.bs"
-		versionCode=”1"
-		version = ”0.0.1">
+		id = "fi.metropolia.bs"
+		versionCode="1"
+		version = "1.0.0">
 
-		<name>BS</name>
-		
-	<description>First deployment.</description>
+		<name>Bookshelf</name>
 
-	<author href="http://users.metropolia.fi/~jounilaa/prj" email=”jouni.laakso2@metropolia.fi">
-		Laboratory project.
+	<description>Library locator client.</description>
+
+	<author href="http://users.metropolia.fi/~jounilaa/prj" email="jouni.laakso2@metropolia.fi">
+		Project.
 	</author>
 
-	<!-- <icon src="icon.png" /> -->
+	<icon src="Icon.png" />
 
 	<!-- <gap:platform name="ios" /> -->
 	<!-- <gap:platform name="android" /> -->
@@ -21,12 +21,12 @@
 	<!-- <preference name="orientation" value="landscape" /> -->
 	<!-- <gap:splash src="splash.png" /> -->
 
-	<!-- Ohjeita: -->
+	<!-- Directions: -->
 	<!-- https://build.phonegap.com/people/sign_in -->
 	<!-- http://docs.build.phonegap.com/en_US/introduction_getting_started.md.html -->
 	
-	<!-- Project repository -->
-	<!-- https://github.com/mpart/BS/tree/master/prj -->
+	<!-- Repository -->
+	<!-- https://github.com/mpart/BS -->
 	
 	<!--  App ID: 1164074 Version n_a PhoneGap 3.3.0 -->
 	
