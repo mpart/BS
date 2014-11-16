@@ -7,7 +7,7 @@ function wc_document_ready(){
 function show_text_field( textfieldId, headerId ) {
 	wc_sortorder( textfieldId );
 	if( headerId == "skeyword" && textfieldId == "keyword" ){ // Rename default
-		document.getElementById( "sq" ).innerHTML = "Keyword search ";
+		document.getElementById( "sq" ).innerHTML = "Keyword ";
 		document.getElementById( "sq" ).style.display="inline-block";
 		document.getElementById( "q" ).style.display="inline-block";
 		document.getElementById( "q" ).focus();
@@ -16,10 +16,6 @@ function show_text_field( textfieldId, headerId ) {
 		document.getElementById( headerId ).style.display="inline-block";
 		document.getElementById( textfieldId ).focus();
 	}
-	//if( textfieldId != "keyword" && textfieldId != "q" && document.getElementById( "sq" ).innerHTML=="Keyword search" ){ // Hide default
-	//	document.getElementById( "q" ).style.display="none";
-	//	document.getElementById( "sq" ).style.display="none";
-	//}
 }
 
 function hide_advanced_text_fields(){
