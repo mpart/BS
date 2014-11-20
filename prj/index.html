@@ -7,18 +7,22 @@
 		
 		<TITLE>&nbsp;</TITLE>
 
-		<META name="viewport" content="width=device-width; initial-scale=1.0" />
+		<META name="viewport" content="width=device-width, initial-scale=1.0" />
 		<META http-equiv="content-type" content="text/html; charset=UTF-8" />
 
-		<BASE href="http://users.metropolia.fi/~jounilaa/prj/" > -->
+		<BASE href="http://users.metropolia.fi/~jounilaa/prj/" >
 		<!-- <BASE href="http://127.0.0.1/prj/" > -->
-		
+		<!-- <BASE href="http://192.168.1.2:8080/prj/" > -->
+
 		<LINK id="wc_css" rel="stylesheet" href="bs.css" type="text/css" />
+		<!-- <LINK id="jq_css" rel="stylesheet" href="jquery.mobile-1.4.5.min.css" type="text/css" /> -->
+		<!-- <LINK id="wc_css" rel="stylesheet" href="jquery.mobile.structure-1.4.5.min.css" type="text/css" /> -->
 		<LINK rel="shortcut icon" href="favicon.ico" />
 		
 		<!-- Haettu 3.11.2014 http://www.worldcatmobile.org/js/jquery.js -->
-		<SCRIPT type="text/JavaScript" src="jquery.js"></SCRIPT>
-		<!-- <SCRIPT type="text/JavaScript" src="jquery-1.11.1.min.js"></SCRIPT> -->
+		<!-- <SCRIPT type="text/JavaScript" src="jquery.js"></SCRIPT> -->
+		<SCRIPT type="text/JavaScript" src="jquery-1.11.1.min.js"></SCRIPT> 
+		<SCRIPT type="text/JavaScript" src="jquery.mobile-1.4.5.js"></SCRIPT> 
 		<SCRIPT type="text/JavaScript" src="wc_location.js"></SCRIPT>
 		<SCRIPT type="text/JavaScript" src="wc_data.js"></SCRIPT>
 		<SCRIPT type="text/JavaScript" src="wc_choices.js"></SCRIPT>
@@ -51,6 +55,8 @@
 				<INPUT type="hidden" name="startRecord" value="1" />
 				<INPUT type="hidden" name="maximumRecords" value="5" />
 				<INPUT type="hidden" name="recordSchema" value="dc" />
+				<!-- <INPUT type="hidden" name="stylesheet" value="http://users.metropolia.fi/~jounilaa/prj/webservices/catalog/xsl/wsiface.xsl" /> -->
+				<!-- <INPUT type="hidden" name="stylesheet" value=" " /> -->
 
 				<TABLE id="form_table" >
 				 <TR class="basic_query" >	
@@ -99,7 +105,7 @@
 				<!-- debug table -->
 
 		</TD></TR><TR><TD>
-		<TABLE id="debug_table">
+		<TABLE id="debug_table" data-role="collapsible">
 		 <TR><TD id="debug" > Debug text. </TD></TR>
 		</TABLE>
 

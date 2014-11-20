@@ -1,4 +1,5 @@
 // Locations
+//var idquerybaseurl = "http://192.168.1.2:8080/cgi/location.php?";
 //var idquerybaseurl = "http://127.0.0.1/cgi/location.php?";
 var idquerybaseurl = "http://users.metropolia.fi/~jounilaa/php/location.php?";
 var idoriginalbaseurl = "http://www.worldcat.org/webservices/catalog/content/libraries";

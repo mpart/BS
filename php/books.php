@@ -16,13 +16,18 @@
 	 * mechanism (not working 18.10.2014), 30.9.2014.
 	 */
 
-	error_reporting(E_ALL);
+	//error_reporting(E_ALL);
 
 	/*
 	 * If defined, HttpRvp removes chunks and returns only one responce instead."); 
 	 */
 	/* Clearly faster without this setting: */
-	//define("REMOVECHUNKS", 1); 
+	define("REMOVECHUNKS", 1); 
+
+	/*
+	 * Do not use header(), instead echo "\r\n":s (lighttpd, broken environment?)
+	 */
+	//define( "ECHOHEADERS", 1 );
 
 	/*
 	 * If "true", output debug html instead of headers (garbled output).
@@ -39,14 +44,14 @@
 	 * If defined and output is not chunked, counts Content-length: again and
 	 * returns the corrent length. STILL IN TEST: 22.10.2014 .
 	 */
-	define("REWRITECONTENTLENGTH", 0);
+	//define("REWRITECONTENTLENGTH", 0);
 	
-	//define( "PRINTNOHEADERS", 0 );
+	define( "PRINTNOHEADERS", 0 );
 	
 	/*
 	 * Do not print all headers other than related to MIME (and other HTTP-relevant).
 	 */
-	//define("CGIENABLE", 0);
+	define("CGIENABLE", 0);
 
 	/*
 	 * PHP, tavallisimpia virheita:
@@ -128,6 +133,33 @@
 		echo "<!-- Error: new HttpRvp failed. -->";
 		exit();
 	}
+
+
+/*	if($_GET){ 
+		foreach ($_GET as $key => $value) {
+                         echo "Debug get: key=$key value=$value.<BR>";
+		}
+	}else{
+		echo "<H3>No _GET parameters.</H3>";
+	}
+	if($_REQUEST){
+		foreach ($_REQUEST as $key => $value) {
+                         echo "Debug request: key=$key value=$value.<BR>";
+		}
+	}else{
+		echo "<H3>No _REQUEST parameters.</H3>";
+	}
+	if( isset( $_SERVER ) ){
+		$ret = $_SERVER[ 'REQUEST_URI' ];
+		echo "<H3>_SERVER[ 'REQUEST_URI' ]:"; 
+		echo "$ret </H3>";
+		$uriarray = explode( "?", $ret, 2 );
+		if( count( $uriarray ) > 1 ){
+			echo "<BR><BR><H4> $uriarray[1] </H4>";
+			$urlextra = $uriarray[1] . $urlextra;
+		}
+	}
+*/
 
 	/*
 	 * Proxy request to the remote server and output the result to the client.

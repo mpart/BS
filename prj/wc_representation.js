@@ -14,7 +14,7 @@ $(document).ready( function() {
 		var wsize = $(window).width();
 
 		// Load CSS again if different sizes are needed
-		$("link[#wc_css]").attr({href : "bs.css"});
+		$("link#wc_css").attr({href : "bs.css"});
 
 		if( $(window).width() > 1200 ){
 
@@ -35,7 +35,7 @@ $(document).ready( function() {
 			  
 		}else{
 			//document.getElementById("logo").src="http://www.worldcatmobile.org/images/masthead_worldcat_beta_en.gif";
-			document.getElementById("logo").innerHTML="<H1 class=\"logo\"><SMALL>BS<SUP><SMALL>&copy;</SMALL></SUP> search</SMALL></H1>";
+			document.getElementById("logo").innerHTML="<H1 class=\"logo\"><SMALL>Bookshelf<SUP><SMALL>&copy;</SMALL></SUP> search</SMALL></H1>";
 			for( var indx=0; indx<document.getElementsByClassName("textfields").length; ++indx)
 			  document.getElementsByClassName("textfields")[ indx ].size = 45;
 		}
