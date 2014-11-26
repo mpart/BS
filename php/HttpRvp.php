@@ -20,14 +20,14 @@
 		protected $hostname;
 		
 		public function __construct($hoststring, $hostport){
-			$argc=0;
+			$argc=0; $ret=true; $retstr="";
         		$argc = func_num_args();
 			if( $argc == 0){
 				//echo "\n<!-- HttpRvp, calling parent constructor, Parent::__construct1(); --> ";
 				Parent::__construct1();
 			}else{
 				//echo "\n<!-- HttpRvp, calling parent constructor, Parent::__construct( $hoststring, $hostport ); --> ";
-				Parent::__construct( $hoststring, $hostport );
+				$ret = Parent::__construct( $hoststring, $hostport );
 			}
 			if( defined('DEBUG') ){
 				if( defined('ECHOHEADERS') )
@@ -35,6 +35,12 @@
 				else
 					header("Content-Type: text/html \r\n");
 				echo "<!DOCTYPE html><HTML><HEAD><TITLE>Debug</TITLE></HEAD><BODY>";
+			}
+			if($ret==false){
+				$retstr = "<diagnostics>\n <diagnostic>\n  <message> Rvp.php: Connection closed to ";
+				$retstr .= $hoststring . ":" . $hostport . " . ";
+				$retstr .= "</message>\n </diagnostic>\n</diagnostics>\n ";
+				echo $retstr;			
 			}
 		}
 		public function __destruct(){
@@ -533,9 +539,16 @@
 					$this->output_message_and_count_contentlen( $contentlennumber, $extraheaders );
 					return true;
 				}else{ // Fast
+					// Virhe 26.11.2014: Content-length: tuli arvoksi nolla (selaimen debug tools->network->headers)
+					// Virheen voi ohittaa define('REWRITECONTENTLENGTH') 
+					// Mikaan muu otsikko ei tulostunut.
 					if( $contentlen != "" )
-						$this->print_header_text( "Content-length: $contentlen " ); // Decimal number text
-					$this->print_header_text("\r\n"); // end of headers section
+						$this->print_header_text( "Content-length: " . $contentlen . " " ); // Decimal number text
+					$this->print_header_text("\r\n"); // end of headers section POISTETTU 26.11.2014 HUOMATTU VIRHE JA KAKSI RIVINVAIHTOA OTSIKOIDEN JALKEEN
+					// LAITETTU TAKAISIN, tuli vain yksi rivi seuraavalla kerralla
+					// UUSI KOKEILU:
+					//$this->print_header_text("\r\n"); // 26.11.2014 -> XML virhe, teksti ei ala alusta
+					// TESTIT TURHIA: Content-length vaarin
 					$err = $this->read_to_output( $contentlennumber ); // integer number
 					if( $err )
 						$bytesoutput += $err;

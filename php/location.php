@@ -17,6 +17,7 @@
 	 */
 
 	//error_reporting(E_ALL);
+	error_reporting(E_ERROR);
 
 	/*
 	 * If defined, HttpRvp removes chunks and returns only one responce instead."); 
@@ -25,12 +26,16 @@
 	define("REMOVECHUNKS", 1); 
 
 	/*
+	 * Echo headers instead using function header().
+	 */
+	define( "ECHOHEADERS", 1 );
+
+	/*
 	 * If "true", output debug html instead of headers (garbled output).
 	 */
 	//define("DEBUG", 1);
 	//define("DEBUGFILE", "file.log"); // not working 29.10.2014
 
-	//echo "Otsikkorivi";
 
 	include 'HttpRvp.php';				// ":.:" in path to search php-files
 							// unknown error: '/home1-3/j/jounilaa/public_html/php/
@@ -39,9 +44,12 @@
 	 * If defined and output is not chunked, counts Content-length: again and
 	 * returns the corrent length. STILL IN TEST: 22.10.2014 .
 	 */
-	//define("REWRITECONTENTLENGTH", 0);
-	
-	define( "PRINTNOHEADERS", 0 );
+	define("REWRITECONTENTLENGTH", 0); // TAMA ASETUS ON OLTAVA locations.php:lle jos echo vaihtoehto (koko eri tms?)
+
+	/*
+	 * Ei toimi jos tama on poissa. Yksi turha rivinvaihto.
+	 */
+	//define( "PRINTNOHEADERS", 0 );
 	
 	/*
 	 * Do not print all headers other than related to MIME (and other HTTP-relevant).
@@ -74,8 +82,6 @@
 	$httpextra .= "Accept-Charset: charset=iso-8859-1\r\n";		// Extra HTTP headers.
 	$httpextra .= "Via: Rvp.php\r\n";
 	$httppostextra = ""; // GET is used not POST, extra POST variables
-	//$httpextra = "Content-Type: text/xml; charset=iso-8859-1\r\n";	// Extra HTTP headers.
-	//$httpextra = "Content-Type: charset=UTF-8\r\n";			// Extra HTTP headers.
 	$appendnametourl = "oclcid"; // GET variable whos value is appended to the URL -part before "?"
 	/*
 	 * Init socket to host.
@@ -87,32 +93,6 @@
 		exit();
 	}
 
-
-/*	if($_GET){ 
-		foreach ($_GET as $key => $value) {
-                         echo "Debug get: key=$key value=$value.<BR>";
-		}
-	}else{
-		echo "<H3>No _GET parameters.</H3>";
-	}
-	if($_REQUEST){
-		foreach ($_REQUEST as $key => $value) {
-                         echo "Debug request: key=$key value=$value.<BR>";
-		}
-	}else{
-		echo "<H3>No _REQUEST parameters.</H3>";
-	}
-	if( isset( $_SERVER ) ){
-		$ret = $_SERVER[ 'REQUEST_URI' ];
-		echo "<H3>_SERVER[ 'REQUEST_URI' ]:"; 
-		echo "$ret </H3>";
-		$uriarray = explode( "?", $ret, 2 );
-		if( count( $uriarray ) > 1 ){
-			echo "<BR><BR><H4> $uriarray[1] </H4>";
-			$urlextra = $uriarray[1] . $urlextra;
-		}
-	}
-*/
 
 	/*
 	 * Proxy request to the remote server and output the result to the client.
@@ -126,8 +106,6 @@
 	 * Close connection (not necessary, the same in the constructor).
 	 */		
 	$rvpproxy->close_socket();
-
-	//echo "<DOCTYPE html>";
 
 	unset($rvpproxy);	// Unnecessary before exit.
 	

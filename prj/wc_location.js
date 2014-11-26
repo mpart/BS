@@ -1,24 +1,7 @@
-// Locations
-//var idquerybaseurl = "http://192.168.1.2:8080/cgi/location.php?";
-//var idquerybaseurl = "http://127.0.0.1/cgi/location.php?";
-var idquerybaseurl = "http://users.metropolia.fi/~jounilaa/php/location.php?";
-var idoriginalbaseurl = "http://www.worldcat.org/webservices/catalog/content/libraries";
+
 var idquerypath = "";
 
-// xISBN haku: http://xisbn.worldcat.org/xisbnadmin/doc/api.htm ei löydy
-// IP-osoitteella: 
-// http://www.oclc.org/developer/develop/web-services/worldcat-registry/sruxsd-interface/openurl-resolver-resource.en.html //
-
-// Esim. "Kun kyyhkyset katosivat"
-// http://www.worldcat.org/webservices/catalog/content/libraries/isbn/9789520107819?IP=85.76.13.104&wskey=KEY&
-
-
-// http://oclc.org/developer/develop/web-services/worldcat-search-api/library-locations.en.html
-// http://www.worldcat.org/webservices/catalog/content/libraries/isbn/{ISBN}?ip={IP_Address}
-// http://www.worldcat.org/webservices/catalog/content/libraries/issn/{ISSN}?ip={IP_Address}
-// http://www.worldcat.org/webservices/catalog/content/libraries/{OCLCID}?ip={IP_Address}
-//
-// Parametrit:
+// Parameters:
 // ip
 // location (esim. "Finland")
 // HUOM, JOS GPS:
@@ -43,7 +26,10 @@ function wc_location_document_ready(){
 
 	idquerypath = "maximumLibraries=5&frbrGrouping=on&";
 	//idquerypath = "&maximiumLibraries=5&frbrGrouping=off&";
-	//idquerypath = "ip=" + callers_ip() + "&maximiumLibraries=5&format=xml&frbrGrouping=off&";
+	//idquerypath = "&maximiumLibraries=5&format=xml&frbrGrouping=off&";
+
+	if( use_local_files == true  )
+		idquerypath += service_key;
 
 	wc_debug_text("wc_location_document_ready");
 
@@ -55,7 +41,6 @@ function wc_location_query( isbnid, oclcid, title, author ){
 	var location = ""; // IP is not found in every case (localhost or some IP-addresses)
 	matchtext = wc_search_isbn( isbnid );
 	if( matchtext!=null && matchtext!="" ) {
-		//wc_debug_text( "ISBN text array length:" + matchtext.length );
 		location = wc_get_location_prompt( "\n ISBN " + matchtext );
 	}else{
 		location = wc_get_location_prompt( "" );
@@ -71,16 +56,10 @@ function wc_location_query( isbnid, oclcid, title, author ){
 	else
 		rowtext += "No record.";
 	rowtext += "</H5>";
-	//rowtext += "<DIV align=\"left\"><BUTTON onclick=\"wc_location_query(";
 	rowtext += "<DIV id=\"locationchoice\" class=\"choicetext\" align=\"left\" onclick=\"wc_location_query(";
 	rowtext += "'"+ isbnid+"', '"+oclcid+"', '"+title+"', '"+author+"' )\"><H5>Update location</H5></DIV>";
-	// rowtext += "</BUTTON></DIV>";
 	wc_debug_text( rowtext );
 	wc_add_result_location_row( rowtext );
-
-	//$('#locationchoice').bind("click", function() {
-	//	wc_location_query( isbnid, oclcid, title, author );
-	//});
 
 	document.getElementById( "searchresultstext" ).innerHTML = "1 .";
 	wc_parse_locations( oclcid, location );
@@ -95,13 +74,24 @@ function wc_parse_locations( oclcid, locationtxt ){
 
 	var qstring  = ""+idquerybaseurl;
 	var getidstr = "";
-	wc_debug_text("location: ["+locationtxt+"]");
-	if( locationtxt!=null && locationtxt != "" )
+	wc_debug_text("location: ["+locationtxt+"] oclcid:[" + oclcid + "]");
+	if( use_local_files == "true" ){
+		// Append oclcid to url:s directory path
+		qstring += "/" + oclcid.trim() + "?";
+	}
+	if( locationtxt!=null && locationtxt != "" ){
 		qstring += "location="+locationtxt+"&";
-	else
-		qstring += "ip=" + callers_ip() +"&";
-	if(oclcid!="")
-		qstring += "oclcid="+ oclcid.trim() +"&";
+	}else{
+		if( use_local_files != true )
+			qstring += "ip=" + callers_ip() +"&";
+		else
+			qstring += "ip=127.0.0.1&";
+	}
+	if( use_local_files != "true" ){
+		// Use proxy to append oclcid to url:s directory path
+		if(oclcid!="")
+			qstring += "oclcid=" + oclcid.trim() + "&";
+	}
 	qstring += idquerypath;
 	getidstr = encodeURI( qstring );
 
@@ -128,10 +118,7 @@ function wc_parse_locations( oclcid, locationtxt ){
         
         xhttp.open( "GET", getidstr,  true);
 
-        xhttp.setRequestHeader("Connection","close");
-
         xhttp.send(null);
-
 }
 
 
@@ -194,14 +181,11 @@ function wc_parse_location_responce(){
 				if(linktext!="")
 					rowtext += " <BR> Link to the record: <A href=\"" + linktext + "\"> link </A>.";
 				rowtext += "</P>";
-				//wc_add_result_location_row( indx+1 , rowtext, "", "" );
 				wc_add_result_location_row( rowtext );
 				wc_debug_text("Locationrow added at "+(indx+1)+".");
 			}
 		}else{
 			var descriptiontxt = "No holdings were found.";
-			//wc_add_result_location_row( 1 , "<CENTER><P> Holding were not found. </P></CENTER>", "", "" );
-			//wc_add_result_location_row( "<CENTER><P> No holding were found. </P></CENTER>" );
 			wc_show_error_responce_message( descriptiontxt, xmlresponce );
 		}
 	}else if( xhttp.readyState == 4 && xhttp.status == 404){ // last

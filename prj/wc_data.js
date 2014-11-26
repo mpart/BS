@@ -2,20 +2,6 @@ var sortorder	= "atstart";
 var xhttp;
 var showdebug 	= false;
 var querystr	= "";
-// Books
-//var querybaseurl = "http://192.168.1.2:8080/cgi/books.php?";
-//var querybaseurl = "http://127.0.0.1/cgi/books.php?";
-var querybaseurl = "http://users.metropolia.fi/~jounilaa/php/books.php?";
-var originalbaseurl = "http://www.worldcat.org/webservices/catalog/search/worldcat/sru?";
-
-
-var baseref = document.getElementsByTagName("BASE")[0]; 
-if( ! baseref ){
-	baseref = document.createElement("BASE"); 
-}
-baseref.setAttribute( "href", "http://users.metropolia.fi/~jounilaa/prj/" ); 
-//baseref.setAttribute( "href", "http://127.0.0.1/prj/" ); // viimeinen '/' oltava
-//baseref.setAttribute( "href", "http://192.168.1.2:8080/prj/" ); // viimeinen '/' oltava
 
 function tag_wc_debug_switch( ){
 }
@@ -33,6 +19,10 @@ function wc_debug_switch( ){
 function tag_wc_debug_text( dtext ){
 }
 function wc_debug_text( dtext ){
+	if(showdebug==false){
+		document.getElementById("debug_table").style.visibility = "collapse";
+		return;
+	}
 	if(dtext!=""){
 		document.getElementById("debug").innerHTML += "<BR>"+dtext; // debug
 	}
@@ -135,9 +125,9 @@ function wc_add_form_hidden_inputs(){
 
 	for(indx=0; indx<iname.length; ++indx){	
 		if( document.getElementsByName( iname[indx] ).length > 0 ){
-		atxt = document.getElementsByName( iname[indx] )[0].value ;
-		if( atxt!="" )
-			querystr += iname[indx] + "=" + atxt + "&";
+			atxt = document.getElementsByName( iname[indx] )[0].value ;
+			if( atxt!="" )
+				querystr += iname[indx] + "=" + atxt + "&";
 		}
 	}
 }
@@ -224,6 +214,7 @@ function wc_parse_responce( ){
 // "nextRecordPosition"
 
 // OCLCID: record -> recordData -> oclsdcs -> oclcterms:recordIdentifier
+// recordIdentifier might be in form: "sc <OCLCID>" for example, to be checked 
 
 	//wc_remove_progress( );
 
@@ -242,7 +233,7 @@ function wc_parse_responce( ){
 			return;
 		}
 		var records = xmlresponce.getElementsByTagName( "record" );
-		var recordstotal = xmlresponce.getElementsByTagName( "numberOfRecords" ); // toimiva seka Chromessa että Firefoxissa, myos Androidin oletusselaimella
+		var recordstotal = xmlresponce.getElementsByTagName( "numberOfRecords" ); // toimiva seka Chromessa ett?? Firefoxissa, myos Androidin oletusselaimella
 		var indx = 0; var undx = 0;
 		var title = "" ; var identifier = "";
 		var author = ""; var ridentifier;
@@ -259,10 +250,7 @@ function wc_parse_responce( ){
 		if( ! records || ! recordstotal || ! recordstotal[0] || records.length==0 ){
 			var descriptiontxt = "<!-- IDENTIFIER --><H5><CENTER> No results. </CENTER></H5>";
 			wc_debug_text("No results (records or recordstotal[0] was null or length was zero).");
-			//wc_add_result_row( 0, "<!-- IDENTIFIER --><H5><CENTER> No results. </CENTER></H5>", "", "" );
 			document.getElementById( "searchresultstext" ).innerHTML = "0 .";
-			//wc_add_result_location_row( 1 , "<CENTER><P> Holding were not found. </P></CENTER>", "", "" );
-			//wc_add_result_location_row( "<CENTER><P> No holding were found. </P></CENTER>" );
 			wc_show_error_responce_message( descriptiontxt, xmlresponce );
 			return;
 		}
@@ -301,41 +289,15 @@ function wc_parse_responce( ){
 				continue;
 			}
 			
-			//xmlDoc = records[indx].childNodes[0].nodeValue.parseXML(  ); // TEST 18.11.2014
-			
-			//rtitle = records[indx].getElementsByTagName( "dc:title" ); // Firefox ok, Chrome: "rtitle was null."
-			
 			// namespace pois !! -> toimii myos Chromessa
-			rtitle = records.item(indx).getElementsByTagName( "title" ); // Sama tulos. Ei attribuutti: .attributes.getNamedItem("dc:title");
-			
-			// TEST 18.11.2014
-			//tmpElem1 = records[indx].getElementsByTagName( "recordData" );
-			//if(tmpElem1!=null){
-			//	tmpElem2 = tmpElem1[0].getElementsByTagName( "oclcdocs" );
-			//	if( tmpElem2!=null && tmpElem2[0]!=null )
-			//		rtitle = tmpElem2[0].getElementsByTagName( "dc:title" );
-			//}
-			//if(tmpElem1==null || tmpElem2==null){
-			//	wc_debug_text( "wc_parse_responce: tmpElem1 or tmpElem2 was null at "+indx+" .");
-			//	continue;
-			//}
-			//if(tmpElem1[0]==null || tmpElem2[0]==null){
-			//	wc_debug_text( "wc_parse_responce: tmpElem1 or tmpElem2 was null at "+indx+" .");
-			//	continue;
-			//}
+			if( navigator.userAgent.indexOf("Firefox") != -1 ) { // "Chrome" "Opera" "Firefox" "MSIE"
+				rtitle = records[indx].getElementsByTagName( "dc:title" );
+			}else{
+				rtitle = records.item(indx).getElementsByTagName( "title" ); 
+			} // .attributes.getNamedItem("attribuutti");
 
-			// Firefox toimiva: rtitle = records[indx].getElementsByTagName( "dc:title" ); // Firefox ok, Chrome: "rtitle was null."
-			
-			//rtitle = xmlresponce.getElementsByTagName( "dc:title" )[indx]; // Firefox ok, Chrome: "rtitle was null."
-			//rtitle = records[indx].getElementsByTagName( "recordData" )[0].getElementsByTagName( "oclcdc" )[0].getElementsByTagName( "dc:title" )[0]; // TEST 18.11.2014
-			//if(xmlDoc!=null) // TEST 18.11.2014
-			//	rtitle = xmlDoc.find( "dc:title" );
-			//else{
-			//	wc_debug_text( "wc_parse_responce: xmlDoc of "+indx+" was null.");
-			//	continue;
-			//}
+			wc_debug_text( "$.browser="+$.browser );
 
-			// TESTI 18.11.2014
 			if(rtitle==null || rtitle[0]==null){
 				wc_debug_text( "wc_parse_responce: rtitle was null.");
 				continue;
@@ -345,21 +307,34 @@ function wc_parse_responce( ){
 				wc_debug_text( "wc_parse_responce: title was empty.");
 			if(rtitle.length==0)
 				wc_debug_text( "wc_parse_responce: rtitle length was zero.");
-			//var rauthor = records[indx].getElementsByTagName( "dc:creator" );
-			var rauthor = records[indx].getElementsByTagName( "creator" );
+			var rauthor;
+			if( navigator.userAgent.indexOf("Firefox") != -1 ) { 
+				rauthor = records[indx].getElementsByTagName( "dc:creator" );
+			}else{
+				rauthor = records[indx].getElementsByTagName( "creator" );
+			}
 			if(rauthor==null)
 				wc_debug_text( "wc_parse_responce: rauthor was null.");
 			for(undx=0; undx<rauthor.length; ++undx)
 				author += rauthor[undx].childNodes[0].nodeValue + " "; // + a loop to search every authoR, VIELA JOKA AUTHOR
-			//ridentifier = records[indx].getElementsByTagName( "dc:identifier" );
-			ridentifier = records[indx].getElementsByTagName( "identifier" );
+			if( navigator.userAgent.indexOf("Firefox") != -1 ) { 
+				ridentifier = records[indx].getElementsByTagName( "dc:identifier" );
+			}else{
+				ridentifier = records[indx].getElementsByTagName( "identifier" );
+			}
 			if(ridentifier==null)
 				wc_debug_text( "wc_parse_responce: ridentifier was null.");
 			for(undx=0; undx<ridentifier.length; ++undx)
 				identifier += ridentifier[undx].childNodes[0].nodeValue + " "; 
-			ridentifier = records[indx].getElementsByTagName( "oclcterms:recordIdentifier" );
-			if( ridentifier && ridentifier[0] )
+			if( navigator.userAgent.indexOf("Firefox") != -1 ) { 
+				ridentifier = records[indx].getElementsByTagName( "oclcterms:recordIdentifier" );
+			}else{
+				ridentifier = records[indx].getElementsByTagName( "recordIdentifier" ); // KORJAUS 26.11.2014
+			}
+			if( ridentifier && ridentifier[0] ){
 				oclcid = ridentifier[0].childNodes[0].nodeValue;
+				wc_debug_text( "wc_data: oclcid was [" + oclcid + "]" );
+			}
 			if( title!=null && title[0]!=null )
 				wc_add_result_row( indx, title, author, identifier, oclcid );
 			
@@ -368,10 +343,6 @@ function wc_parse_responce( ){
 			title=""; author=""; identifier="";
 		}
 
-		//if(records.length==0)
-		//	wc_add_result_row( ); // tyhja
-
-		//document.getElementById("test").innerHTML = xhttp.responseXML;
 		wc_debug_text("SUCCESS");
 	}else{
 		//wc_debug_text( "wc_parse_responce: status mismatch.");
@@ -400,7 +371,7 @@ function wc_add_result_row( indx, titletxt, authortxt, isbntxt, oclcid ){
 	else
 		wc_debug_text( "wc_add_result_row: authortxt was empty" );
 
-	if( isbntxt!="" ){ // match palauttaa pilkuilla erotellun listan
+	if( isbntxt!="" ){
 		isbnlist = wc_search_isbn( isbntxt );
 		resulttxt = resulttxt + "<BR><SPAN><SMALL><BR> ISBN: " + isbnlist + "<SMALL></SPAN>";
 	}else
@@ -423,25 +394,15 @@ function wc_add_result_row( indx, titletxt, authortxt, isbntxt, oclcid ){
 
 function wc_get_location_code( indx, isbntxt, oclcid, title, author ){
 	var strictisbn = "";
-	strictisbn = wc_search_isbn( isbntxt, oclcid );
+	strictisbn = wc_search_isbn( isbntxt ); 
         $("#"+indx).bind( "click", function() { // bind < JS 1.7
                 //wc_location_query( strictisbn, oclcid, title, author );
                 wc_location_query( isbntxt, oclcid, title, author );
         });
+	wc_debug_text( "wc_get_location_code: oclcid=[" + oclcid + "]" );
 	wc_debug_text( "wc_get_location_code" );
 }
 
-function old_wc_clear_resulttable(){
-	var rtable = document.getElementById("result_table");
-	var rowcount = rtable.rows.length;
-	var indx=0;
-	for(indx=0; indx<rowcount; ++indx){
-		rtable.deleteRow( indx );
-	}
-}
-
-// ei viela kokeiltu 26.10.2014
-//
 function wc_search_isbn( text ){ 
 	// s. 8 "User manual"
 	// ISBN 978-0-571-08989-5
@@ -457,7 +418,8 @@ function wc_search_isbn( text ){
 	//	S2 = 10 - S1
 	//	S2 on tarkistussumma
 	// https://www.isbn-international.org/content/isbn-users-manual    (ja http://www.isbn.org)
-	var regtxt = "([0-9]{1,3}[ -]?[0-9]{1,5}[ -]?[0-9]{1,7}[ -]?[0-9]{1,6}[ -]?[0-9]{1}?[ \x09\x08\n\r\t])+"; 
+	//var regtxt = "([0-9]{1,3}[ -]?[0-9]{1,5}[ -]?[0-9]{1,7}[ -]?[0-9]{1,6}[ -]?[0-9]{1}?[ \x09\x08\n\r\t])+"; 
+	var regtxt = "([0-9]{1,3}[ -]?[0-9]{1,5}[ -]?[0-9]{1,7}[ -]?[0-9]{1,6}[ -]?[0-9]{1}?[ \x09\x08\n\r\t])+?";
 	return wc_search_regexp( regtxt, text );
 }
 function wc_search_regexp( regtxt, text ){
@@ -482,6 +444,8 @@ function wc_search_regexp( regtxt, text ){
         }
         return false;
 }
+
+// Not in use 26.11.2014
 function wc_search_issn( text ){
 	// http://www.issn.org/understanding-the-issn/what-is-an-issn/
 	// acronym ISSN followed by two groups of four digits, separated by a hyphen. The eighth digit is a check digit calculated according to a 
@@ -493,19 +457,6 @@ function wc_search_issn( text ){
 
 function wc_get_location_prompt( ){
 	return prompt("Enter location", "");
-}
-
-function old_wc_clear_result_table( ){
-	var tbl = document.getElementById("result_table");
-	var indx = 0;
-	if( !tbl )
-		return;
-	var tbllen = tbl.rows.length;
-	wc_debug_text("wc_clear_result_table rowcount: " + tbllen );
-	if( !tbllen )
-		return;
-	for(indx=(tbllen-1); indx>=0; --indx)
-		tbl.deleteRow( indx );
 }
 
 function wc_get_next_results_query( ){
@@ -545,7 +496,7 @@ function wc_show_error_responce_message( desctxt, xmlresponce ){
 		wc_debug_text("wc_show_error_responce_message: errdetails==null or errdetails.length<=0 .");
 	}
 	// Esim. Worldcat API: "General System Error: java.lang.NullPointerException"
-	// tai: kirja aei ole listattu, paikkaa ei tunneta tms.
+	// tai: kirjaa ei ole listattu, paikkaa ei tunneta tms.
 	wc_add_result_location_row( "<CENTER><H5>"+desctxt+"</H5><H6>Description:</H6><H5>"+errtxt+"</H5></CENTER>" );
 	wc_debug_text( "Description:" + desctxt );
 	wc_debug_text( "Diagnostics message:" + errtxt );
@@ -560,13 +511,8 @@ function wc_add_result_location_row( htmltxt ){
         }
         rrow.setAttribute("class","result_table");
         $("link#wc_css").attr({href : "bs.css"}); // reload
-        //$("link[#wc_css]").attr({href : "bs.css"}); // reload
 
         var rcol1 = rrow.insertCell(0);
 	if( htmltxt!="" )
         	rcol1.innerHTML = htmltxt;
-}
-function wc_get_ip(){
-
-
 }

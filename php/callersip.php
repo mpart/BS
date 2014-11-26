@@ -6,7 +6,7 @@
  	 * Callers IP
 	 */
 
-	//echo "content-type: application/javascript; charset=utf-8 \r\n\r\n" ; // Lighttpd
+	//echo "content-type: application/javascript; charset=utf-8 \r\n\r\n" ; // Lighttpd without PHP-module
 	header("content-type: application/javascript; charset=utf-8"); // Apache
 
 	if($_SERVER)
