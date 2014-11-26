@@ -28,7 +28,7 @@ function wc_location_document_ready(){
 	//idquerypath = "&maximiumLibraries=5&frbrGrouping=off&";
 	//idquerypath = "&maximiumLibraries=5&format=xml&frbrGrouping=off&";
 
-	if( use_local_files == true  )
+	if( use_local_files == "true"  )
 		idquerypath += service_key;
 
 	wc_debug_text("wc_location_document_ready");
