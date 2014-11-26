@@ -345,7 +345,9 @@ function wc_parse_responce( ){
 
 		wc_debug_text("SUCCESS");
 	}else{
-		//wc_debug_text( "wc_parse_responce: status mismatch.");
+		if(xhttp.readyState == 4){
+			wc_show_error_responce_message( "No records were found." , null );
+		}
 	}
 }
 
@@ -478,6 +480,7 @@ function wc_show_error_responce_message( desctxt, xmlresponce ){
 	if( xmlresponce == null ){
 		wc_debug_text("wc_show_error_responce_message: xmlresponce was null.");
 		wc_debug_text( desctxt );
+	   	wc_add_result_location_row( "<CENTER><H5>"+desctxt+"</H5></CENTER>" );
 		return;
 	}
 	wc_debug_text("At wc_show_error_responce_message.");
